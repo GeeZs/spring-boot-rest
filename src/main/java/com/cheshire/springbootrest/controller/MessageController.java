@@ -6,6 +6,8 @@ import com.cheshire.springbootrest.repository.MessageRepo;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -42,8 +44,7 @@ public class MessageController {
     @PutMapping("{id}")
     public Message update(
             @PathVariable("id") Message messageFromDb,
-            @RequestBody Message message
-    ) {
+            @RequestBody Message message) {
         BeanUtils.copyProperties(message, messageFromDb, "id");
 
         return messageRepo.save(messageFromDb);
@@ -52,5 +53,11 @@ public class MessageController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Message message) {
         messageRepo.delete(message);
+    }
+
+    @MessageMapping("/changeMessage")
+    @SendTo("/topic/activity")
+    public Message change(Message message){
+        return messageRepo.save(message);
     }
 }
