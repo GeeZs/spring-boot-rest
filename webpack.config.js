@@ -1,5 +1,5 @@
-const path = require('path')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const path = require('path');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
     mode: 'development',
@@ -13,8 +13,7 @@ module.exports = {
             'localhost:8080'
         ],
         stats: 'errors-only',
-        clientLogLevel: 'error'
-
+        clientLogLevel: 'error',
     },
     module: {
         rules: [
@@ -31,6 +30,13 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader'
+                ]
             }
         ]
     },
